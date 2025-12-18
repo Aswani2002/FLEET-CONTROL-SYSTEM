@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fleet Control</title>
+    <style>
+        .box
+        {
+            width:350px;
+            height:450px;
+            transform:translate(-50%, -50%);
+            position:absolute;
+            top:50%;
+            left:50%;
+            box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.459), 0 6px 20px 0 rgba(255, 255, 255, 0.463);
+            background-color:white;
+
+        }
+
+        .center
+        {
+            text-align: center;
+        }
+
+        body
+        {
+            background-color: blue;
+        }
+
+        .ip
+        {
+            padding:10px;
+            border:none;
+            text-align: center;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+        }
+        
+        .bt
+        {
+            background-color: blue;
+            color: white;
+            padding:12px;
+            font-size: 15px;
+            border-radius: 10px;
+            border:none;
+            width:100px;
+
+        }
+
+
+        .bt:hover
+        {
+            background-color: rgb(5, 5, 97);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="center">
+            <img src="{% static 'razor.jpg' %}" alt="" height="70px">
+            <br>
+            <br>
+            <form method="POST">
+                {% csrf_token %}
+                    <input type="text" name="name" value="{{ request.user.name }}" class="ip">
+                    <br>
+                    <br>
+                    <select name="bank_name" class="ip" placeholder="Enter Your Bank Name" required> 
+                        <option value="">Select Your Bank</option>
+                        <option value="Indian Bank">Indian Bank</option>
+                        <option value="State Bank Of India">State Bank Of India</option>
+                        <option value="State Bank Of Travancore">State Bank Of Travancore</option>
+                        <option value="Canara Bank">Canara Bank</option>
+                        <option value="ICICI Bank">ICICI Bank</option>
+                        <option value="HDFC Bank">HDFC Bank</option>
+                        <option value="Punjab National Bank">Punjab National Bank</option>
+                        <option value="Bank Of Baroda">Bank Of Baroda</option>
+                        <option value="Indian Overseas Bank">Indian Overseas Bank</option>
+                        <option value="Federal Bank">Federal Bank</option>
+                    </select>                    
+                    <br>
+                    <br>
+                    <input type="text" name="bank_acc_no" class="ip" placeholder="Enter Your Card Number" pattern="[0-9]{16}" title="Please enter exactly 16 digits" required>
+                    <br>
+                    <br>
+                    <input type="text" name="cvv" class="ip" placeholder="Enter Your Card CVV" pattern="[0-9]{3}" title="Please enter exactly 3 digits" required>
+                    <br>
+                    <br>
+                    <input type="text" name="amount" value="{{discount_price}}" class="ip">
+                    <br>
+                    <br>
+                    <br>
+                <button type="submit" class="bt">Pay</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

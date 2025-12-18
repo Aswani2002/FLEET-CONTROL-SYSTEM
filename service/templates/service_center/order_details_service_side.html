@@ -1,0 +1,61 @@
+{% extends 'service_center/service_base.html' %}
+{% load static %}
+
+{% block content %}
+<br>
+<br>
+<div class="text-center">
+<h2>Order Details (ID: {{ order.id }})</h2>
+
+<h4>Customer Information</h4>
+<p><strong>Name:</strong> {{ order.user.name }}</p>
+<p><strong>Address:</strong> {{ order.address }}, {{ order.city }} - {{ order.pincode }}</p>
+<p><strong>Mobile Number:</strong> {{ order.user.mobile_number }}</p>
+
+<h4>Ordered Products</h4>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in ordered_products %}
+            <tr>
+                <td>{{ item.product.product_name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>₹{{ item.price }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h4>Total Price: ₹{{ order.total_price }}</h4>
+<h4>Status: {{ order.status }}</h4>
+<br>
+
+<form method="POST" action="{% url 'update_order_status' order.id %}">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="status">Order Status:</label>
+        <select id="status" name="status" class="form-control text-center">
+            <option value="pending" {% if order.status == 'pending' %}selected{% endif %}>Pending</option>
+            <option value="processing" {% if order.status == 'processing' %}selected{% endif %}>Processing</option>
+            <option value="completed" {% if order.status == 'completed' %}selected{% endif %}>Completed</option>
+            <option value="cancelled" {% if order.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+        </select>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Update Status</button>
+    <br>
+</form>
+<br>
+
+
+<a href="{% url 'manage_product_orders' %}" class="btn btn-secondary">Back to Orders</a>
+<div>
+<br>
+<br>
+{% endblock %}

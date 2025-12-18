@@ -1,0 +1,28 @@
+{% extends 'general/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        {% for service in services %}
+        <div class="col-md-3 mb-4">
+            <a href="{% url 'service_single' service.pk %}"><div class="card h-100">
+                <img src="{{ service.imageURL }}" class="card-img-top" alt="{{ service.service_name }}" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ service.service_name }}</h5>
+                    <p class="card-text">Price: ₹{{ service.price }}</p>
+                    <p class="card-text">Provided by: {{ service.user.username }}</p>
+                    {% if request.user.is_customer %}
+                    <a href="{% url 'add_to_service_cart' service.pk %}" class="btn btn-primary text-white">Add to cart</a>
+                    {% else %}
+
+                    {% endif %}
+                </div>
+            </div></a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<br>
+<br>
+{% endblock %}

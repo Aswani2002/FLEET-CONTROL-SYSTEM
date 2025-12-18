@@ -1,0 +1,82 @@
+{% extends 'service_center/service_base.html' %}
+{% load static %}
+
+{% block content %}
+<br>
+<br>
+<div class="container mt-4">
+
+    <div class="card shadow">
+        <div class="card-header">
+            <h5>Add a Service</h5>
+        </div>
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="productName" class="form-label">Service Name</label>
+                    <input type="text" class="form-control" id="productName" name="product_name" placeholder="Enter service name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">Service Category</label>
+                    <select class="form-select" id="category" name="category" required>
+                        <option value="">Select a category</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.category_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price</label>
+                    <input type="number" step="0.01" class="form-control" id="price" name="price" placeholder="Enter price" required>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image</label>
+                    <input type="file" class="form-control" id="image" name="image">
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter product description" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Create</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <h5>Services</h5>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Service Name</th>
+                    <th>Service Category</th>
+                    <th>Price</th>
+                    <th>Image</th>
+                    <th>Description</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td>{{ product.service_name }}</td>
+                        <td>{{ product.category.category_name }}</td>
+                        <td>{{ product.price }}</td>
+                        <td><img src="{{ product.imageURL }}" alt="{{ product.product_name }}" width="50"></td>
+                        <td>{{ product.description }}</td>
+                        <td>
+                            <form method="POST" action="{% url 'delete_service' product.pk %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div> 
+
+</div>
+<br>
+<br>
+{% endblock %}

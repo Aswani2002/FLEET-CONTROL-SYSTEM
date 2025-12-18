@@ -1,0 +1,63 @@
+{% extends 'service_center/service_base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Add Category Card -->
+    <div class="card shadow">
+        <div class="card-body">
+            <h5 class="card-title">Add Service Category</h5>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="categoryName" class="form-label">Service Category Name</label>
+                    {% comment %} <input type="text" class="form-control" id="categoryName" name="category_name" placeholder="Enter service category name" required> {% endcomment %}
+                    <input type="text" class="form-control" id="categoryName" name="category_name" placeholder="Enter service category name" required oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')">
+
+                </div>
+                <button type="submit" class="btn btn-primary">Create</button>
+                <br>
+                {% if messages %}
+                    <ul class="messages" style="list-style-type: none;">
+                        {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <!-- Categories Table -->
+    <div class="card mt-5">
+        <div class="card-body">
+            <h5 class="card-title">Service Categories</h5>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Service Category Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for category in categories %}
+                    <tr>
+                        <td>{{ category.category_name }}</td>
+                        <td>
+                            <form method="POST" action="{% url 'delete_service_category' category.pk %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2" class="text-center">No categories found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody> 
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

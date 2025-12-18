@@ -1,0 +1,153 @@
+{% extends 'service_center/service_base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Profile Picture and Verification Status -->
+                        <div class="text-center mb-4">
+                            <div class="mb-3">
+                                <img src="{{ user.imageURL }}" alt="Profile Picture" class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
+                            </div>
+                            <label class="btn btn-outline-primary btn-sm" for="profile_picture">Change Profile Picture</label>
+                            <input type="file" class="form-control-file d-none" name="profile_picture" id="profile_picture">
+
+                            <div class="verification-status mt-2">
+                                {% if user.verified %}
+                                    <span class="badge bg-success">Verified</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Unverified</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Profile Fields -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Username (Uneditable)</label>
+                                    <input type="text" class="form-control" value="{{ user.username }}" disabled>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="name">Name</label>
+                                    <input type="text" class="form-control" name="name" id="name" value="{{ user.name }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="location">Location (URL)</label>
+                            <input type="url" class="form-control" name="location" id="location" value="{{ user.location }}">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="address">Address</label>
+                            <textarea name="address" id="address" class="form-control">{{ user.address }}</textarea>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="city">City</label>
+                                    <input type="text" class="form-control" name="city" id="city" value="{{ user.city }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="landmark">Landmark</label>
+                                    <input type="text" class="form-control" name="landmark" id="landmark" value="{{ user.landmark }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="pincode">Pincode</label>
+                                    <input type="text" class="form-control" name="pincode" id="pincode" value="{{ user.pincode }}" 
+                                           maxlength="6" pattern="\d{6}" required
+                                           oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                           placeholder="Enter 6-digit pincode">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="mobile_number">Mobile Number</label>
+                                    <input type="text" class="form-control" name="mobile_number" id="mobile_number" value="{{ user.mobile_number }}" 
+                                           maxlength="10" pattern="\d{10}" required
+                                           oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                           placeholder="Enter 10-digit mobile number">
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        <!-- Bank Details -->
+                        <h5 class="text-center mt-4 mb-3">Bank Details</h5>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="bank_name">Bank Name</label>
+                                    <input type="text" class="form-control" name="bank_name" id="bank_name" value="{{ user.bank_name }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="bank_account_number">Bank Account Number</label>
+                                    <input type="text" class="form-control" name="bank_account_number" id="bank_account_number" value="{{ user.bank_account_number }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="ifsc_code">IFSC Code</label>
+                                    <input type="text" class="form-control" name="ifsc_code" id="ifsc_code" value="{{ user.ifsc_code }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="upi_id">UPI ID</label>
+                                    <input type="text" class="form-control" name="upi_id" id="upi_id" value="{{ user.upi_id }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Save Button -->
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<style>
+    .card {
+        border-radius: 10px;
+    }
+    .card-body {
+        padding: 30px;
+    }
+    .img-fluid {
+        border: 2px solid #ddd;
+        padding: 10px;
+    }
+    .btn-outline-primary {
+        cursor: pointer;
+    }
+</style>
+
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'general/base.html' %}
+{% load static %}
+
+{% block content %}
+{% load static %}
+
+
+    <!-- Optional custom styling -->
+    <style>
+        .card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-outline-secondary {
+            color: #6c757d;
+            border-color: #6c757d; 
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #6c757d;
+            color: #fff;
+        }
+    </style>
+
+    <div class="container">
+        <div class="card shadow-lg p-4" style="max-width: 600px; margin: 0 auto; border-radius: 10px;">
+            <h1 class="text-center mb-4">Service Center Login</h1>
+            <form method="POST">
+                {% csrf_token %}
+
+                <!-- Username -->
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
+                </div>
+
+                <!-- Password -->
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+                </div>
+
+                <!-- Register Button -->
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+
+            <div class="text-center mt-3">
+                <p>Not registered? <a href="{% url 'service_register' %}" class="btn btn-outline-secondary">Register here</a></p>
+            </div>
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+    <br>
+    <br>
+
+{% endblock %}

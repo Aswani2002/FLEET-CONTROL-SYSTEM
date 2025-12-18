@@ -1,0 +1,22 @@
+{% extends 'service_center/service_base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .center 
+    {
+        text-align: center;
+        margin-top:20px;
+    }
+</style>
+
+<div class="center">
+    <h1>Service Center Dashboard</h1>
+    <h4>Welcome, {{request.user}}</h4>
+    <div class="col-md-6"></div>
+    <div>
+        <img src="{% static 'images/two.jpg' %}" class="banner_img" style="width: 100%; max-width: 600px; height: auto;">
+    </div>
+    <h4>add your products ande services </h4>
+{% endblock %}

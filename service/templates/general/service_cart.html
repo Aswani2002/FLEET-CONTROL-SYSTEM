@@ -1,0 +1,109 @@
+{% extends 'general/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    {% if request.user.is_authenticated %}
+    <div class="row">
+        <div class="col-lg-8 col-md-12">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Remove</th>
+                            <th scope="col">Serivce Provider</th>
+                            <th scope="col">Serivce</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cart_item in cart_items %}
+                        <tr>
+                            <td><a href="{% url 'service_remove_cart' cart_item.pk %}" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i>Remove</a></td>
+                            <td>{{ cart_item.service.user.name }}</td>
+                            <td>
+                                <img src="{{ cart_item.service.imageURL }}" alt="{{ cart_item.service.service_name }}" style="width: 50px;">
+                                <p>{{ cart_item.service.service_name }}</p>
+                            </td>
+                            <td>₹{{ cart_item.service.price }}</td>
+                      
+                            <td id="product-total-{{ cart_item.pk }}">₹{{ cart_item.single_total }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">Order Summary</div>
+                <div class="card-body">
+                    <p><strong>Subtotal: </strong>₹<span id="subtotal">{{ subtotal|floatformat:2 }}</span></p>
+                    <p><strong>Total: </strong>₹<span id="total">{{ total|floatformat:2 }}</span></p>
+                    {% if allow_checkout %}
+                    <a href="" class="btn btn-success btn-block">Update Cart*</a>
+                    <a href="{% url 'service_checkout' %}" class="btn btn-primary btn-block">Proceed to Checkout</a>
+                    {% else %}
+                    <p class="text-danger text-center">
+                        {% if not same_shopkeeper %}
+                        Please choose products from the same seller.
+                        {% else %}
+                        Please adjust your cart items before checkout.
+                        {% endif %}
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <h3 class="text-center">Your cart is empty.</h3>
+    <p class="text-center"><a href="" class="btn btn-primary">Continue Shopping</a></p>
+    {% endif %}
+</div>
+
+
+<br>
+<br>
+
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+{% comment %} <script>
+    $(document).ready(function () {
+        function updateQuantity(cartItemId, newQuantity) {
+            $.ajax({
+                type: 'POST',
+                url: '{% url "update_cart_quantity" %}',
+                data: {
+                    'cart_item_id': cartItemId,
+                    'quantity': newQuantity,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    $('#product-total-' + cartItemId).text('₹' + data.single_total.toFixed(2));
+                    $('#subtotal').text('₹' + data.subtotal.toFixed(2));
+                    $('#total').text('₹' + data.total.toFixed(2));
+                },
+                error: function () {
+                    alert('Failed to update quantity');
+                }
+            });
+        }
+
+        $('.quantity-input').on('input', function () {
+            var cartItemId = $(this).data('cart-item-id');
+            var newQuantity = $(this).val();
+            updateQuantity(cartItemId, newQuantity);
+        });
+    });
+</script> {% endcomment %}
+
+
+
+
+{% endblock %}

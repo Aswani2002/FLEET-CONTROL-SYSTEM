@@ -1,0 +1,40 @@
+{% extends 'general/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<br>
+
+<div class="container">
+    <h2>Service Request Details</h2>
+    <div class="card">
+        <div class="card-header">
+            Request Id #{{ order.id }} - Rs.{{ order.total_price }}
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Shipping Address</h5>
+            <p class="card-text">{{ order.address }}, {{ order.city }}, {{ order.pincode }}</p>
+            <p class="card-text">Landmark: {{ order.landmark }}</p>
+
+            <h5 class="card-title mt-4">Requested Services</h5>
+            <p class="card-text">Requested Date: {{ order.scheduled_date }}</p>
+
+            <ul class="list-group">
+                {% for product in ordered_products %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ product.service.service_name }} - Rs.{{ product.price }}
+                </li>
+                {% endfor %}
+            </ul>
+
+            <h5 class="card-title mt-4">Payment Information</h5>
+            <p class="card-text">Bank Name: {{ order.bank_name }}</p>
+            <p class="card-text">Paid: {{ order.paid|yesno:"Yes,No" }}</p>
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+<br>
+{% endblock %}
